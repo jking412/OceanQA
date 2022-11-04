@@ -2,7 +2,7 @@ package router
 
 import (
 	"OceanQA/internal/controller"
-	"OceanQA/ui"
+	"OceanQA/internal/middleware"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -12,6 +12,7 @@ var (
 )
 
 func RegisterRoutes(r *gin.Engine) {
+	r.Use(middleware.Cors())
 
 	v1Group := r.Group("/v1")
 	{
@@ -25,15 +26,17 @@ func RegisterRoutes(r *gin.Engine) {
 		c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
 
-	r.NoRoute(staticHandler)
+	r.Static("/css", "ui/dist/css")
+	r.Static("/js", "ui/dist/js")
+	r.Static("/fonts", "ui/dist/fonts")
+	r.Static("/favicon.ico", "ui/dist")
+
+	r.NoRoute(NoRouteHandler)
 }
 
-func staticHandler(c *gin.Context) {
-	requestUri := c.Request.RequestURI
-	file, err := ui.Dist.ReadFile("dist" + requestUri)
-	if err != nil {
-		c.Abort()
-	} else {
-		c.String(http.StatusOK, string(file))
-	}
+func NoRouteHandler(c *gin.Context) {
+	c.JSON(http.StatusNotFound, gin.H{
+		"msg": "error",
+	})
+
 }
