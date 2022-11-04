@@ -21,6 +21,7 @@ func newViper() *viperlib.Viper {
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("../")
+	viper.AddConfigPath("../../")
 	viper.SetConfigName("config")
 
 	err := viper.ReadInConfig()

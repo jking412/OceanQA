@@ -1,12 +1,26 @@
 package router
 
 import (
+	"OceanQA/internal/controller"
 	"OceanQA/ui"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
+var (
+	questionController = &controller.QuestionController{}
+)
+
 func RegisterRoutes(r *gin.Engine) {
+
+	v1Group := r.Group("/v1")
+	{
+		questionGroup := v1Group.Group("/question")
+		{
+			questionGroup.GET("/all", questionController.ShowAllQuestion)
+		}
+	}
+
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
