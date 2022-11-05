@@ -15,7 +15,12 @@ type Question struct {
 	OriginContent string    `gorm:"column:content;type:longtext"`
 	ParseContent  string    `gorm:"column:parse_content;type:longtext"`
 	IsStared      bool      `gorm:"column:is_stared;type:tinyint(1)"`
-	Tag           []Tag     `gorm:"many2many:question_tags;"`
+	Tags          []Tag     `gorm:"many2many:question_tags;"`
+}
+
+type QuestionTag struct {
+	QuestionId uint64
+	TagId      uint64
 }
 
 func (q *Question) TableName() string {

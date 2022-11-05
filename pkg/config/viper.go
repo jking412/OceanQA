@@ -45,3 +45,7 @@ func GetInt(key string) int {
 func GetBool(key string) bool {
 	return internalViper.GetBool(key)
 }
+
+func IsSet(key string) bool {
+	return internalViper.IsSet(key)
+}

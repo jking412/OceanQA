@@ -14,13 +14,15 @@
       <el-main>
           <router-view></router-view>
       </el-main>
-      <el-footer></el-footer>
+      <el-footer>
+      </el-footer>
     </el-container>
 
   </div>
 </template>
 
 <script>
+import 'markdown-it-editor/lib/index.css'
 
 export default {
   name: 'MainHome',
@@ -32,7 +34,7 @@ export default {
 
   methods: {
       toHome(){
-        this.$router.push({path: '/'})
+        this.$router.push({path:'/'})
       },
       toAdd(){
         this.$router.push({path: '/add'})

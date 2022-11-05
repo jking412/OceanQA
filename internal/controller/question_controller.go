@@ -30,8 +30,12 @@ func (*QuestionController) ShowAllQuestion(c *gin.Context) {
 	resp := &response.QuestionResponse{}
 	if pageSize*currentNum <= total {
 		questions = questions[pageSize*(currentNum-1) : pageSize*currentNum]
-	} else {
+	} else if pageSize*(currentNum-1) <= total {
 		questions = questions[pageSize*(currentNum-1):]
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"msg": "页码超出范围",
+		})
 	}
 
 	for index, question := range questions {
@@ -43,7 +47,7 @@ func (*QuestionController) ShowAllQuestion(c *gin.Context) {
 			Content:   question.OriginContent,
 			IsStared:  question.IsStared,
 		})
-		for _, tag := range question.Tag {
+		for _, tag := range question.Tags {
 			resp.QuestionList[index].Tags = append(resp.QuestionList[index].Tags, tag.Name)
 		}
 	}

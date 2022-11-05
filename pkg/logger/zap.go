@@ -3,6 +3,7 @@ package logger
 
 import (
 	"OceanQA/internal/conf"
+	"OceanQA/pkg/config"
 	"encoding/json"
 	"fmt"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -96,8 +97,11 @@ func getLogWriter(filename string, maxSize, maxBackup, maxAge int, compress bool
 		Compress:   compress,
 	}
 
-	return zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(lumberJackLogger))
-
+	if config.IsSet("ENV") && config.GetString("ENV") == "prod" {
+		return zapcore.NewMultiWriteSyncer(zapcore.AddSync(lumberJackLogger))
+	} else {
+		return zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout))
+	}
 }
 
 // Dump 调试专用，不会中断程序，会在终端打印出 warning 消息。
