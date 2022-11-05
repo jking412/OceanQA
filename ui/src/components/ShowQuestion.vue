@@ -51,7 +51,7 @@ export default {
     },
     methods:{
     loadAll(){
-      this.request.get('v1/question/all',{
+      this.request.get('/question/all',{
         params:{
           current_num:this.currentPage,
           page_size:this.pageSize,

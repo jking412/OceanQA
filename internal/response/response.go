@@ -20,3 +20,8 @@ type Pagination struct {
 	PageSize uint64 `json:"page_size"`
 	Total    uint64 `json:"total"`
 }
+
+type Tag struct {
+	Id   uint64 `json:"id"`
+	Name string `json:"name"`
+}

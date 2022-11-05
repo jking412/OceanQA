@@ -6,11 +6,9 @@ import router from "./router";
 import store from "./store";
 import request from "@/request/index";
 import './assets/global.css';
-import { MarkdownEditor } from 'markdown-it-editor'
-import 'markdown-it-editor/lib/index.css'
 
 Vue.use(ElementUI)
-Vue.use(MarkdownEditor)
+
 
 Vue.config.productionTip = false
 

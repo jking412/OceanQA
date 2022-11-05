@@ -10,22 +10,30 @@ import (
 
 var (
 	questionController = &controller.QuestionController{}
+	tagController      = &controller.TagController{}
 )
 
 func RegisterRoutes(r *gin.Engine) {
 	r.Use(middleware.Cors())
+
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", gin.H{})
+	})
 
 	v1Group := r.Group("/v1")
 	{
 		questionGroup := v1Group.Group("/question")
 		{
 			questionGroup.GET("/all", questionController.ShowAllQuestion)
+			questionGroup.POST("/create", questionController.CreateQuestion)
+		}
+
+		tagGroup := v1Group.Group("/tag")
+		{
+			tagGroup.POST("/create", tagController.CreateTag)
+			tagGroup.GET("/search", tagController.SearchTag)
 		}
 	}
-
-	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{})
-	})
 
 	r.Static("/css", "ui/dist/css")
 	r.Static("/js", "ui/dist/js")

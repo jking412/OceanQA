@@ -10,13 +10,21 @@ import (
 func TestCreateQuestion(t *testing.T) {
 	Initialize()
 	// 插入批量的Question数据
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 1; i++ {
 		question := &model.Question{
 			Title:         faker.Word(),
 			AnswerUrl:     faker.URL(),
 			OriginContent: faker.Paragraph(),
 			ParseContent:  faker.Paragraph(),
 			IsStared:      false,
+			Tags: []model.Tag{
+				{
+					Id: 1,
+				},
+				{
+					Id: 2,
+				},
+			},
 		}
 		question.Create()
 	}

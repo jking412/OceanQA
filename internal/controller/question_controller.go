@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"OceanQA/internal/model"
+	"OceanQA/internal/request"
 	"OceanQA/internal/response"
 	"OceanQA/internal/service"
 	"github.com/gin-gonic/gin"
@@ -56,5 +58,38 @@ func (*QuestionController) ShowAllQuestion(c *gin.Context) {
 	resp.Pagination.Total = total
 	c.JSON(http.StatusOK, gin.H{
 		"msg": resp,
+	})
+}
+
+func (*QuestionController) CreateQuestion(c *gin.Context) {
+	req := &request.CreateQuestionRequest{}
+	if err := c.ShouldBindJSON(req); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
+			"msg": "参数错误",
+		})
+		return
+	}
+	question := &model.Question{
+		Title:         req.Title,
+		AnswerUrl:     req.AnswerUrl,
+		OriginContent: req.OriginContent,
+		ParseContent:  req.ParseContent,
+	}
+
+	for _, tag := range req.Tags {
+		question.Tags = append(question.Tags, model.Tag{
+			Id:   tag.Id,
+			Name: tag.Name,
+		})
+	}
+
+	if !question.Create() {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"msg": "创建问题失败",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"msg": "创建问题成功",
 	})
 }
