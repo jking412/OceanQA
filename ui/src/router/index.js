@@ -6,8 +6,23 @@ Vue.use(VueRouter);
 const routes = [
     {
         path: '/',
+        // redirect: {
+        //     name: 'Show',
+        // },
         name: 'Home',
         component: () => import('../components/MainHome.vue'),
+        children: [
+            {
+                path: '',
+                name: 'Show',
+                component: () => import('../components/ShowQuestion.vue')
+            },
+            {
+                path: '/add',
+                name: 'Add',
+                component: () => import('../components/AddQuestion.vue')
+            }
+        ],
     },
 ]
 
