@@ -26,6 +26,9 @@ func RegisterRoutes(r *gin.Engine) {
 		{
 			questionGroup.GET("/all", questionController.ShowAllQuestion)
 			questionGroup.POST("/create", questionController.CreateQuestion)
+			questionGroup.GET("/show", questionController.ShowQuestion)
+			questionGroup.GET("/delete", questionController.DeleteQuestion)
+			questionGroup.GET("/star", questionController.UpdateStarStatus)
 		}
 
 		tagGroup := v1Group.Group("/tag")

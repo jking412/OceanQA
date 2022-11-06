@@ -1,18 +1,21 @@
 package response
 
-type QuestionResponse struct {
-	QuestionList []Question `json:"question_list"`
-	Pagination   Pagination `json:"pagination"`
+type QuestionListResp struct {
+	QuestionList []QuestionResp `json:"question_list"`
+	Pagination   Pagination     `json:"pagination"`
 }
 
-type Question struct {
-	Id        uint64   `json:"id"`
-	CreatedAt string   `json:"created_at"`
-	UpdatedAt string   `json:"updated_at"`
-	Title     string   `json:"title"`
-	Content   string   `json:"content"`
-	Tags      []string `json:"tags"`
-	IsStared  bool     `json:"is_stared"`
+type QuestionResp struct {
+	Id            uint64 `json:"id"`
+	CreatedAt     string `json:"created_at"`
+	UpdatedAt     string `json:"updated_at"`
+	ReadTime      uint64 `json:"read_time"`
+	Title         string `json:"title"`
+	OriginContent string `json:"origin_content"`
+	ParseContent  string `json:"parse_content"`
+	AnswerUrl     string `json:"answer_url"`
+	Tags          []Tag  `json:"tags"`
+	IsStared      bool   `json:"is_stared"`
 }
 
 type Pagination struct {

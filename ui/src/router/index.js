@@ -6,9 +6,9 @@ Vue.use(VueRouter);
 const routes = [
     {
         path: '/',
-        // redirect: {
-        //     name: 'Show',
-        // },
+        redirect: {
+            name: 'Show',
+        },
         name: 'Home',
         component: () => import('../components/MainHome.vue'),
         children: [
@@ -21,6 +21,11 @@ const routes = [
                 path: '/add',
                 name: 'Add',
                 component: () => import('../components/AddQuestion.vue')
+            },
+            {
+                path: '/question/:id',
+                name: 'Detail',
+                component: () => import('../components/DetailQuestion.vue')
             }
         ],
     },

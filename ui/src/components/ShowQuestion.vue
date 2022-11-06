@@ -2,14 +2,18 @@
     <div>
         <div  v-for="question in questions" :key="question.id">
             <el-row type="flex" justify="center" class="detail">
-              <el-col :span="10" class="title">{{question.title}}</el-col>
+              <el-col :span="10" class="title">
+                <div @click="questionDetail(question.id)" style="cursor:pointer">
+                  {{question.title}}
+                </div>
+              </el-col>
               <el-col :span="1" v-for="tag in question.tags" :key="tag.id" :pull="3">
-                <el-tag>{{tag}}</el-tag>
+                <el-tag>{{tag.name}}</el-tag>
               </el-col>
             </el-row>
             <el-row type="flex" justify="center">
-              <div class="content">
-                {{question.content}}
+              <div class="content"  @click="questionDetail(question.id)" style="cursor:pointer">
+                {{question.origin_content}}
               </div>
             </el-row>
             <el-row type="flex" justify="center">
@@ -69,6 +73,9 @@ export default {
       this.pageSize = pageSize
       this.loadAll()
     },
+      questionDetail(id){
+        this.$router.push({path: '/question/' + id})
+      }
     }
 }
 </script>

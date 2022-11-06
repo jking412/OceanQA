@@ -10,6 +10,7 @@ type Question struct {
 	Id            uint64    `gorm:"column:id;primaryKey;autoIncrement"`
 	CreatedAt     time.Time `gorm:"column:created_at;type:datetime"`
 	UpdatedAt     time.Time `gorm:"column:updated_at;type:datetime"`
+	ReadTime      uint64    `gorm:"column:read_time;type:bigint"`
 	Title         string    `gorm:"column:title;type:varchar(255);Index"`
 	AnswerUrl     string    `gorm:"column:answer_url;type:varchar(255)"`
 	OriginContent string    `gorm:"column:content;type:longtext"`

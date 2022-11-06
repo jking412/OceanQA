@@ -22,6 +22,36 @@ func (qs *QuestionService) GetQuestionList() ([]model.Question, bool) {
 	return questions, true
 }
 
+func (qs *QuestionService) GetQuestion(id uint64) (*model.Question, bool) {
+	question := &model.Question{}
+	if err := database.DB.Model(&model.Question{}).Preload("Tags").First(question, id).Error; err != nil {
+		logger.WarnString("Database", "Get question failed", err.Error())
+		return question, false
+	}
+	question.ReadTime++
+	if !qs.UpdateQuestionReadTime(question.Id, question.ReadTime) {
+		logger.WarnString("Database", "Get question failed", "Update question read time failed")
+		return question, false
+	}
+	return question, true
+}
+
+func (qs *QuestionService) UpdateQuestionReadTime(id uint64, readTime uint64) bool {
+	if err := database.DB.Model(&model.Question{}).Where("id = ?", id).Update("read_time", readTime).Error; err != nil {
+		logger.WarnString("Database", "Update question read time failed", err.Error())
+		return false
+	}
+	return true
+}
+
+func (qs *QuestionService) UpdateQuestionStarStatus(id uint64, isStared bool) bool {
+	if err := database.DB.Model(&model.Question{}).Where("id = ?", id).Update("is_stared", isStared).Error; err != nil {
+		logger.WarnString("Database", "Update question star status failed", err.Error())
+		return false
+	}
+	return true
+}
+
 func (qs *QuestionService) CreateQuestionTag(questionId uint64, tagId uint64) bool {
 	questionTag := model.QuestionTag{
 		QuestionId: questionId,
@@ -29,6 +59,18 @@ func (qs *QuestionService) CreateQuestionTag(questionId uint64, tagId uint64) bo
 	}
 	if err := database.DB.Model(&model.QuestionTag{}).Create(&questionTag).Error; err != nil {
 		logger.WarnString("Database", "Create question tag failed", err.Error())
+		return false
+	}
+	return true
+}
+
+func (qs *QuestionService) DeleteQuestion(id uint64) bool {
+	if err := database.DB.Table("question_tags").Delete(&model.QuestionTag{}, "question_id = ?", id).Error; err != nil {
+		logger.WarnString("Database", "Delete question tag failed", err.Error())
+		return false
+	}
+	if err := database.DB.Delete(&model.Question{Id: id}).Error; err != nil {
+		logger.WarnString("Database", "Delete question failed", err.Error())
 		return false
 	}
 	return true
